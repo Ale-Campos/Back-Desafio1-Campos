@@ -16,17 +16,6 @@ class ProductManager {
     constructor(){
         this.products = []
     }
-    
-    isValid(product) {
-        return (
-            product.title != undefined &&
-            product.description != undefined &&
-            product.price != undefined &&
-            product.thumbnail != undefined &&
-            product.code != undefined &&
-            product.stock != undefined
-        )
-    }
 
     getProducts() {
         return this.products
@@ -34,7 +23,12 @@ class ProductManager {
 
     addProduct(product){
 
-        if(this.isValid(product)) {
+        if(product.title != undefined &&
+            product.description != undefined &&
+            product.price != undefined &&
+            product.thumbnail != undefined &&
+            product.code != undefined &&
+            product.stock != undefined) {
 
             let existingPorduct = this.products.find(prod => prod.code == product.code)
             
@@ -46,10 +40,19 @@ class ProductManager {
                 ProductManager.totalProductCounter++
             }
         } else {
-            console.log("El producto tiene campos incompletos");
+            console.log("El producto tiene campos incompletos")
         }
         
         return this.products
+    }
+
+    getProductByID(id) {
+        if(id) {
+           return this.products.find(prod => prod.id == id)
+        } else {
+            console.log("El id introducido es inválido")
+            return null
+        }
     }
 
     removeProduct(code) {
@@ -83,6 +86,9 @@ pm.removeProduct(product3.code)
 pm.addProduct(product4)
 pm.addProduct(invalidProduct)
 pm.addProduct(duplicatedProduct)
-
+console.log('Muestro el producto con id 2');
+console.log(pm.getProductByID(2))
+console.log('Muestro los productos');
 console.log(pm.getProducts())
-console.log(ProductManager.totalProductCounter); // Marca 3 porque producto 3 fue agregado y luego eliminado
+console.log('Muestro el total de productos que se han ingresado historicamente');
+console.log(ProductManager.totalProductCounter) // Marca 3 porque producto 3 fue agregado y luego eliminado
