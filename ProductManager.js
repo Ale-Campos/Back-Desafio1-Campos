@@ -1,3 +1,5 @@
+const fs = require('fs')
+
 class Product {
     constructor(title, description, price, thumbnail, code, stock){
         this.title = title
@@ -13,44 +15,79 @@ class ProductManager {
 
     static totalProductCounter = 0
 
-    constructor(){
-        this.products = []
+    constructor(path){
+        this.path = path
     }
 
-    getProducts() {
-        return this.products
-    }
-
-    addProduct(product){
-
+    isProductValid(product) {
         if(product.title != undefined &&
             product.description != undefined &&
             product.price != undefined &&
             product.thumbnail != undefined &&
             product.code != undefined &&
             product.stock != undefined) {
+                return true
+            } else {
+                return false
+            }
+    }
 
-            let existingPorduct = this.products.find(prod => prod.code == product.code)
+    getProducts() {
+
+        let products = JSON.parse(fs.readFileSync(this.path, 'utf-8', (err, data) => data))
+        return products
+    }
+
+    getProductByID(code) {
+        if(code) {
+            let products = this.getProducts()
+           return products.find(prod => prod.code == code)
+        } else {
+            console.log("El id introducido es inválido")
+            return null
+        }
+    }
+
+    addProduct(product){
+        
+        if(this.isProductValid(product)) {
+
+            let products = this.getProducts()
+            let existingPorduct = products.find(prod => prod.code == product.code)
             
             if(existingPorduct) {
                 console.log("El producto ya existe")
             } else {
-                product.id = this.products.length + 1
-                this.products.push(product)
+                product.id = products.length + 1
+                products.push(product)
                 ProductManager.totalProductCounter++
+                fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
+                console.log("Producto agregado correctamente");
             }
         } else {
             console.log("El producto tiene campos incompletos")
         }
         
+
         return this.products
     }
+    
+    updateProduct(code, product) {
+        if(code && product && this.isProductValid(product)) {
+            let products = this.getProducts()
+            let productIndex = products.findIndex(prod => prod.code == code)
 
-    getProductByID(id) {
-        if(id) {
-           return this.products.find(prod => prod.id == id)
+            if(productIndex != -1) {
+                product.id = products[productIndex].id
+                products[productIndex] = product
+                fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
+                console.log("Producto actualizado correctamente");
+            } else {
+                console.log("No se encontró el producto a actualizar");
+            }
+            return products
         } else {
-            console.log("El id introducido es inválido")
+            console.log("No se pudo actualizar el producto, verifique los datos ingresados")
             return null
         }
     }
@@ -58,37 +95,44 @@ class ProductManager {
     removeProduct(code) {
 
         if(code) {
-
-            let product = this.products.find(prod => prod.code == code)
+            let products = this.getProducts()
+            let product = products.find(prod => prod.code == code)
     
             if(product){
-                this.products = this.products.filter(prod => prod.code != code)
+                fs.writeFileSync(this.path, JSON.stringify(products.filter(prod => prod.code != code), null, 2))
+                console.log("Producto eliminado correctamente");
+            } else {
+                console.log("No se encontró el producto a eliminar");
             }
+        } else {
+            console.log("El id introducido es inválido")
         }
-        
-        return this.products
     }
 }
 
-let pm = new ProductManager
+let pm = new ProductManager('./products/products.json')
 
-let product = new Product('Producto1', 'Descripcion 1', 100, 'url', '122333', 100)
-let product2 = new Product('Producto1', 'Descripcion 1', 100, 'url', '455678', 100)
-let product3 = new Product('Producto1', 'Descripcion 1', 100, 'url', '787844', 100)
-let product4 = new Product('Producto1', 'Descripcion 1', 100, 'url', '993664', 100)
-let duplicatedProduct = new Product('Producto1', 'Descripcion 1', 100, 'url', '122333', 100)
-let invalidProduct = new Product('Producto1', 100, 'url', '122333', 100) // Sin decripcion
 
-pm.addProduct(product)
+
+
+let product1 = new Product('Producto1', 'Descripcion 1', 100, 'url', '122333', 100)
+let product2 = new Product('Producto2', 'Descripcion 1', 100, 'url', '455678', 100)
+let product3 = new Product('Producto3', 'Descripcion 1', 100, 'url', '787844', 100)
+let product4 = new Product('Producto4', 'Descripcion 1', 100, 'url', '993664')
+let product1Updated = new Product('ProductoActualizado2', 'Descripcion Actualizada', 100, 'url', '122333', 100)
+
+pm.addProduct(product1)
+pm.addProduct(product1) // Duplicado
 pm.addProduct(product2)
 pm.addProduct(product3)
-pm.removeProduct(product3.code)
-pm.addProduct(product4)
-pm.addProduct(invalidProduct)
-pm.addProduct(duplicatedProduct)
-console.log('Muestro el producto con id 2');
-console.log(pm.getProductByID(2))
-console.log('Muestro los productos');
+pm.addProduct(product4) // Invalido
+
+pm.updateProduct('122333', product1Updated)
+pm.updateProduct('------', product1Updated) // Actualizar un producto que no existe
+
+pm.removeProduct('455678') // Eliminar producto 2
+pm.removeProduct('------') // Eliminar un producto que no existe
+
 console.log(pm.getProducts())
-console.log('Muestro el total de productos que se han ingresado historicamente');
-console.log(ProductManager.totalProductCounter) // Marca 3 porque producto 3 fue agregado y luego eliminado
+console.log(pm.getProductByID('122333'))
+
