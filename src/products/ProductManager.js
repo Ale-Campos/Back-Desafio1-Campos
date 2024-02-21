@@ -1,22 +1,20 @@
-const fs = require('fs')
+import __dirname from '../utils/dirname.js'
+import fs from 'fs'
 
-class Product {
-    constructor(title, description, price, thumbnail, code, stock){
-        this.title = title
-        this.description = description
-        this.price = price
-        this.thumbnail = thumbnail
-        this.code = code //Identificador
-        this.stock = stock
-    }
-}
-
-class ProductManager {
+export default class ProductManager {
 
     static totalProductCounter = 0
+    static productManager;
 
-    constructor(path){
-        this.path = path
+    constructor(){
+        this.path = __dirname + '/../database/products.json'
+    }
+
+    static getProductManager() {
+        if(ProductManager.productManager == undefined) {
+            ProductManager.productManager = new ProductManager(__dirname + '/../database/products.json')
+        }
+        return ProductManager.productManager
     }
 
     isProductValid(product) {
@@ -38,13 +36,13 @@ class ProductManager {
         return products
     }
 
-    getProductByID(code) {
-        if(code) {
+    getProductByID(id) {
+        if(id) {
             let products = this.getProducts()
-           return products.find(prod => prod.code == code)
+           return products.find(prod => prod.id == id)
         } else {
             console.log("El id introducido es inválido")
-            return null
+            return undefined
         }
     }
 
@@ -72,10 +70,10 @@ class ProductManager {
         return this.products
     }
     
-    updateProduct(code, product) {
-        if(code && product && this.isProductValid(product)) {
+    updateProduct(id, product) {
+        if(id && product && this.isProductValid(product)) {
             let products = this.getProducts()
-            let productIndex = products.findIndex(prod => prod.code == code)
+            let productIndex = products.findIndex(prod => prod.id == id)
 
             if(productIndex != -1) {
                 product.id = products[productIndex].id
@@ -92,14 +90,14 @@ class ProductManager {
         }
     }
 
-    removeProduct(code) {
+    removeProduct(id) {
 
-        if(code) {
+        if(id) {
             let products = this.getProducts()
-            let product = products.find(prod => prod.code == code)
+            let product = products.find(prod => prod.id == id)
     
             if(product){
-                fs.writeFileSync(this.path, JSON.stringify(products.filter(prod => prod.code != code), null, 2))
+                fs.writeFileSync(this.path, JSON.stringify(products.filter(prod => prod.id != id), null, 2))
                 console.log("Producto eliminado correctamente");
             } else {
                 console.log("No se encontró el producto a eliminar");
@@ -109,30 +107,3 @@ class ProductManager {
         }
     }
 }
-
-let pm = new ProductManager('./products/products.json')
-
-
-
-
-let product1 = new Product('Producto1', 'Descripcion 1', 100, 'url', '122333', 100)
-let product2 = new Product('Producto2', 'Descripcion 1', 100, 'url', '455678', 100)
-let product3 = new Product('Producto3', 'Descripcion 1', 100, 'url', '787844', 100)
-let product4 = new Product('Producto4', 'Descripcion 1', 100, 'url', '993664')
-let product1Updated = new Product('ProductoActualizado2', 'Descripcion Actualizada', 100, 'url', '122333', 100)
-
-pm.addProduct(product1)
-pm.addProduct(product1) // Duplicado
-pm.addProduct(product2)
-pm.addProduct(product3)
-pm.addProduct(product4) // Invalido
-
-pm.updateProduct('122333', product1Updated)
-pm.updateProduct('------', product1Updated) // Actualizar un producto que no existe
-
-pm.removeProduct('455678') // Eliminar producto 2
-pm.removeProduct('------') // Eliminar un producto que no existe
-
-console.log(pm.getProducts())
-console.log(pm.getProductByID('122333'))
-

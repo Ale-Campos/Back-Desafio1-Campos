@@ -1,0 +1,83 @@
+[
+  {
+    "title": "ProductoActualizado2",
+    "description": "Descripcion Actualizada",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "122333",
+    "stock": 100,
+    "id": 1
+  },
+  {
+    "title": "Producto3",
+    "description": "Descripcion 3",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "787844",
+    "stock": 100,
+    "id": 3
+  },
+  {
+    "title": "Producto4",
+    "description": "Descripcion 4",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "204543",
+    "stock": 100,
+    "id": 4
+  },
+  {
+    "title": "Producto5",
+    "description": "Descripcion 5",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "420352",
+    "stock": 100,
+    "id": 5
+  },
+  {
+    "title": "Producto6",
+    "description": "Descripcion 6",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "120364",
+    "stock": 100,
+    "id": 6
+  },
+  {
+    "title": "Producto7",
+    "description": "Descripcion 7",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "274516",
+    "stock": 100,
+    "id": 7
+  },
+  {
+    "title": "Producto8",
+    "description": "Descripcion 8",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "095243",
+    "stock": 100,
+    "id": 8
+  },
+  {
+    "title": "Producto9",
+    "description": "Descripcion 9",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "2534172",
+    "stock": 100,
+    "id": 9
+  },
+  {
+    "title": "Producto10",
+    "description": "Descripcion 10",
+    "price": 100,
+    "thumbnail": "url",
+    "code": "634352",
+    "stock": 100,
+    "id": 10
+  }
+]
