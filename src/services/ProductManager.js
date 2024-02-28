@@ -20,10 +20,11 @@ export default class ProductManager {
     isProductValid(product) {
         if(product.title != undefined &&
             product.description != undefined &&
-            product.price != undefined &&
-            product.thumbnail != undefined &&
             product.code != undefined &&
-            product.stock != undefined) {
+            product.price != undefined &&
+            product.status != undefined &&
+            product.stock != undefined &&
+            product.category != undefined) {
                 return true
             } else {
                 return false
@@ -47,6 +48,7 @@ export default class ProductManager {
     }
 
     addProduct(product){
+        let result = {result: true, error: ''}
         
         if(this.isProductValid(product)) {
 
@@ -55,39 +57,45 @@ export default class ProductManager {
             
             if(existingPorduct) {
                 console.log("El producto ya existe")
+                result = {result: false, error: 'El producto ya existe'}
             } else {
-                product.id = products.length + 1
+                product.id = Date.now()
+                if(product.status)
                 products.push(product)
                 ProductManager.totalProductCounter++
                 fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
+                result.products = [products]
                 console.log("Producto agregado correctamente");
             }
         } else {
             console.log("El producto tiene campos incompletos")
+            result = {result: false, error: 'El producto tiene campos incompletos'}
         }
-        
-
-        return this.products
+        return result
     }
     
     updateProduct(id, product) {
-        if(id && product && this.isProductValid(product)) {
+        let result = {result: true, error: ''}
+        if(id && product) {
             let products = this.getProducts()
             let productIndex = products.findIndex(prod => prod.id == id)
 
             if(productIndex != -1) {
                 product.id = products[productIndex].id
-                products[productIndex] = product
+                products[productIndex] = {...products[productIndex], ...product}
                 fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
                 console.log("Producto actualizado correctamente");
+                result.products = [products]
             } else {
                 console.log("No se encontró el producto a actualizar");
+                result = {result: false, error: 'No se encontró el producto a actualizar'}
             }
-            return products
+
         } else {
             console.log("No se pudo actualizar el producto, verifique los datos ingresados")
-            return null
+            result = {result: false, error: 'No se pudo actualizar el producto, verifique los datos ingresados'}
         }
+        return result
     }
 
     removeProduct(id) {
