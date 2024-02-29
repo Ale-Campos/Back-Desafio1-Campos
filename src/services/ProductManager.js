@@ -4,7 +4,7 @@ import fs from 'fs'
 export default class ProductManager {
 
     static totalProductCounter = 0
-    static productManager;
+    static productManager
 
     constructor(){
         this.path = __dirname + '/../database/products.json'
@@ -12,7 +12,7 @@ export default class ProductManager {
 
     static getProductManager() {
         if(ProductManager.productManager == undefined) {
-            ProductManager.productManager = new ProductManager(__dirname + '/../database/products.json')
+            ProductManager.productManager = new ProductManager()
         }
         return ProductManager.productManager
     }
@@ -59,7 +59,7 @@ export default class ProductManager {
                 console.log("El producto ya existe")
                 result = {result: false, error: 'El producto ya existe'}
             } else {
-                product.id = Date.now()
+                product.id = Date.now().toString()
                 if(product.status)
                 products.push(product)
                 ProductManager.totalProductCounter++
@@ -84,15 +84,12 @@ export default class ProductManager {
                 product.id = products[productIndex].id
                 products[productIndex] = {...products[productIndex], ...product}
                 fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
-                console.log("Producto actualizado correctamente");
                 result.products = [products]
             } else {
-                console.log("No se encontró el producto a actualizar");
                 result = {result: false, error: 'No se encontró el producto a actualizar'}
             }
 
         } else {
-            console.log("No se pudo actualizar el producto, verifique los datos ingresados")
             result = {result: false, error: 'No se pudo actualizar el producto, verifique los datos ingresados'}
         }
         return result

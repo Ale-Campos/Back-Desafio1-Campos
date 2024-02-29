@@ -1,8 +1,8 @@
-import express from "express";
+import { Router } from "express";
 import ProductManager from '../services/ProductManager.js'
 import Product from "../models/Product.js";
 
-const productRouter = express.Router();
+const productRouter = Router();
 
 productRouter.get("/", (req,res) => {
     let { limit } = req.query
@@ -60,17 +60,15 @@ productRouter.put("/:pid", (req,res) => {
 
     let {result, error} = Product.hasEmptyProps(req.body)
     if(!result) {
-        console.log('vacios');
         return res.status(400).json({result, error})
     }
 
     let updateResult = ProductManager.getProductManager().updateProduct(pid, req.body)
 
     if(!updateResult.result) {
-        console.log('aca');
         return res.status(400).json(updateResult)
     }
     return res.status(200).json(updateResult)
 })
 
-export default productRouter;
+export default productRouter

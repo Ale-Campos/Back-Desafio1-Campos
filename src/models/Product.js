@@ -23,7 +23,7 @@ export default class Product {
         }
 
         validationFields.forEach(field => {
-            if(field != 'thumbnail' && (producto[field] === undefined || producto[field] === '')) {
+            if(field != 'thumbnail' && field!="id" && (producto[field] === undefined || producto[field] === '')) {
                 validation = {result: false, error: `Required field: ${field}`}
             }
         })

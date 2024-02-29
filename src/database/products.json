@@ -7,7 +7,7 @@
     "code": "0026262",
     "category": "test",
     "status": true,
-    "id": 1709079634565
+    "id": "1709079634565"
   },
   {
     "title": "Producto de prueba",
@@ -18,7 +18,7 @@
     "stock": 200,
     "category": "test",
     "status": true,
-    "id": 1709079939039
+    "id": "1709079939039"
   },
   {
     "title": "Producto de prueba",
@@ -29,7 +29,7 @@
     "stock": 200,
     "category": "test",
     "status": true,
-    "id": 1709080463427
+    "id": "1709080463427"
   },
   {
     "title": "Producto de prueba",
@@ -40,7 +40,7 @@
     "stock": 200,
     "category": "test",
     "status": true,
-    "id": 1709080532442
+    "id": "1709080532442"
   },
   {
     "title": "Producto de prueba",
@@ -50,18 +50,18 @@
     "code": "99222513",
     "stock": 200,
     "category": "test",
-    "id": 1709080944463,
+    "id": "1709080944463",
     "status": true
   },
   {
-    "title": "Producto de prueba actualizado",
+    "title": "Producto de prueba actualizado otra vez",
     "description": "Esto es una prueba",
     "price": 100,
     "thumbnail": [],
     "code": "9922251355",
     "stock": 100,
     "category": "test",
-    "id": 1709081255449,
-    "status": true
+    "status": true,
+    "id": "1709165975710"
   }
 ]
