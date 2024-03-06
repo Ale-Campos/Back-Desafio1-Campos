@@ -10,7 +10,7 @@
     "id": "1709079634565"
   },
   {
-    "title": "Producto de prueba",
+    "title": "Producto de prueba2",
     "description": "Esto es una prueba",
     "price": 100,
     "thumbnail": [],
@@ -21,7 +21,7 @@
     "id": "1709079939039"
   },
   {
-    "title": "Producto de prueba",
+    "title": "Producto de prueba3",
     "description": "Esto es una prueba",
     "price": 100,
     "thumbnail": [],
@@ -32,7 +32,7 @@
     "id": "1709080463427"
   },
   {
-    "title": "Producto de prueba",
+    "title": "Producto de prueba4",
     "description": "Esto es una prueba",
     "price": 100,
     "thumbnail": [],
@@ -43,7 +43,7 @@
     "id": "1709080532442"
   },
   {
-    "title": "Producto de prueba",
+    "title": "Producto de prueba5",
     "description": "Esto es una prueba",
     "price": 100,
     "thumbnail": [],
@@ -63,5 +63,170 @@
     "category": "test",
     "status": true,
     "id": "1709165975710"
+  },
+  {
+    "title": "Producto de prueba20",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "9922214124253",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709735991512"
+  },
+  {
+    "title": "Producto de prueba21",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "99222141242531",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736104132"
+  },
+  {
+    "title": "Producto de prueba23",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "992221412425312",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736158172"
+  },
+  {
+    "title": "Producto de prueba24",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "1122333",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736195056"
+  },
+  {
+    "title": "Producto de prueba24",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "11223343",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736213811"
+  },
+  {
+    "title": "Producto de prueba25",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "112233432",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736245362"
+  },
+  {
+    "title": "Producto de prueba26",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "1122334322",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736340026"
+  },
+  {
+    "title": "Producto de prueba27",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "11223343222",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736355797"
+  },
+  {
+    "title": "Producto de prueba28",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "112233432223",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736362380"
+  },
+  {
+    "title": "Producto de prueba29",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "1122334322233",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736394368"
+  },
+  {
+    "title": "Producto de prueba30",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "11223343222334",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736413141"
+  },
+  {
+    "title": "Producto de prueba31",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "112233432223344",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736446992"
+  },
+  {
+    "title": "Producto de prueba32",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "1122334322233444",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736453370"
+  },
+  {
+    "title": "Producto de prueba33",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "112222334322233444",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736520863"
+  },
+  {
+    "title": "Producto de prueba34",
+    "description": "Esto es una prueba de socket",
+    "price": 100,
+    "thumbnail": [],
+    "code": "1122223343222331444",
+    "stock": 200,
+    "category": "test",
+    "status": true,
+    "id": "1709736554439"
   }
 ]

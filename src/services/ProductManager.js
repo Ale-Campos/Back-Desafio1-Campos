@@ -64,7 +64,7 @@ export default class ProductManager {
                 products.push(product)
                 ProductManager.totalProductCounter++
                 fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
-                result.products = [products]
+                result.products = products
                 console.log("Producto agregado correctamente");
             }
         } else {

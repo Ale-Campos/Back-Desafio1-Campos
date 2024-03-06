@@ -1,0 +1,12 @@
+<h1>Live Products</h1>
+
+<ul id="products">
+    {{#each products}}
+        <li>
+            {{this.title}}
+        </li>
+    {{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProduct.js"></script>

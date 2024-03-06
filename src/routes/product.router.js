@@ -31,6 +31,9 @@ productRouter.post("/", (req,res) => {
     if(!addResult.result) {
         return res.status(400).json(addResult)
     }
+
+    req.io.emit('newProduct', addResult.products)
+
     return res.status(200).json(addResult)
 })
 
