@@ -32,9 +32,17 @@ export default class ProductManager {
             }
     }
 
-    static async getProducts() {
+    static async getProducts(limit, page, query, sort) {
+        
 
-        let products = await productsModel.find()
+        let filter = {};
+        if(query) {
+            query = query.toLowerCase()
+            query=='true' || query == 'false'? filter = {status: query} : filter= {category: query}  
+            
+        }
+
+        let products = await productsModel.paginate(filter, {limit, page, sort: {price: sort}, lean:true})
         return products
     }
 

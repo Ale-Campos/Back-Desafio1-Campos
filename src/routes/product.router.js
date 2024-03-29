@@ -1,12 +1,12 @@
-import { Router, response } from "express";
+import { Router } from "express";
 import ProductManager from '../services/ProductManager.js'
 import Product from "../models/Product.js";
 
 const productRouter = Router();
 
 productRouter.get("/", async (req,res) => {
-    let { limit } = req.query
-    let products = await ProductManager.getProducts()
+    let { limit, page, query, sort } = req.query
+    let products = await ProductManager.getProducts(limit || 10, page || 1, query || null, sort || 'desc')
 
     console.log(products)
     if(limit === undefined) {
@@ -14,7 +14,7 @@ productRouter.get("/", async (req,res) => {
     } else if (isNaN(parseInt(limit))) {
         return res.status(400).json({error: 'Invalid limit'})
     } else {
-        return res.status(200).json(products.slice(0, parseInt(limit)))
+        return res.status(200).json(products)
     }
 })
 
@@ -48,7 +48,7 @@ productRouter.post("/", async (req,res) => {
 productRouter.get("/:pid", async (req,res) => {
     try {
         let {pid} = req.params
-        //* Segun documentacion de MongoDB, el id debe tener un length de 24
+
         if(pid.length !== 24) {
             return res.status(400).json({error: 'Invalid ID'})
         }
