@@ -1,3 +1,4 @@
+import { productsModel } from '../dao/models/products.js'
 import __dirname from '../utils/dirname.js'
 import fs from 'fs'
 
@@ -31,84 +32,74 @@ export default class ProductManager {
             }
     }
 
-    getProducts() {
+    static async getProducts() {
 
-        let products = JSON.parse(fs.readFileSync(this.path, 'utf-8', (err, data) => data))
+        let products = await productsModel.find()
         return products
     }
 
-    getProductByID(id) {
-        if(id) {
-            let products = this.getProducts()
-           return products.find(prod => prod.id == id)
-        } else {
-            console.log("El id introducido es inválido")
-            return undefined
+    static async getProductByCode(code) {
+        try {
+           return await productsModel.find({code})
+        } catch(error) {
+            throw new Error(error)
         }
-    }
-
-    addProduct(product){
-        let result = {result: true, error: ''}
-        
-        if(this.isProductValid(product)) {
-
-            let products = this.getProducts()
-            let existingPorduct = products.find(prod => prod.code == product.code)
-            
-            if(existingPorduct) {
-                console.log("El producto ya existe")
-                result = {result: false, error: 'El producto ya existe'}
-            } else {
-                product.id = Date.now().toString()
-                if(product.status)
-                products.push(product)
-                ProductManager.totalProductCounter++
-                fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
-                result.products = products
-                console.log("Producto agregado correctamente");
-            }
-        } else {
-            console.log("El producto tiene campos incompletos")
-            result = {result: false, error: 'El producto tiene campos incompletos'}
-        }
-        return result
     }
     
-    updateProduct(id, product) {
+    static async getProductById(id) {
+        try {
+           return await productsModel.findById(id)
+        } catch(error) {
+            console.log(error)
+            throw new Error("Error while excecuting DB Query")
+        }
+    }
+
+    static async addProduct(product){
+        try {
+
+            let newProduct = new productsModel({
+                ...product
+            })
+            await newProduct.save()
+            return newProduct
+        } catch(error) {
+            console.log(error)
+            throw new Error(error)
+        }
+    }
+    
+    static async updateProduct(id, product) {
         let result = {result: true, error: ''}
         if(id && product) {
-            let products = this.getProducts()
-            let productIndex = products.findIndex(prod => prod.id == id)
-
-            if(productIndex != -1) {
-                product.id = products[productIndex].id
-                products[productIndex] = {...products[productIndex], ...product}
-                fs.writeFileSync(this.path, JSON.stringify(products, null, 2))
-                result.products = [products]
-            } else {
-                result = {result: false, error: 'No se encontró el producto a actualizar'}
+            try {
+                await productsModel.updateOne({_id:id}, product)
+                result.updateProduct = product
+            } catch(error) {
+                console.log(error)
+                console.log("Error while updating product")
+                result = {result: false, error: "Error while updating product"}
             }
-
         } else {
             result = {result: false, error: 'No se pudo actualizar el producto, verifique los datos ingresados'}
         }
         return result
     }
 
-    removeProduct(id) {
+    static async removeProduct(id) {
+        let result = {result: true, error: ''}
+        try {
 
-        if(id) {
-            let products = this.getProducts()
-            let product = products.find(prod => prod.id == id)
-    
-            if(product){
-                fs.writeFileSync(this.path, JSON.stringify(products.filter(prod => prod.id != id), null, 2))
-                console.log("Producto eliminado correctamente");
+            if(id) {
+                await productsModel.deleteOne({_id:id})    
             } else {
-                console.log("No se encontró el producto a eliminar");
+                result.result = false
+                result.error = 'No se pudo eliminar el producto, verifique los datos ingresados'
             }
-        } else {
-            console.log("El id introducido es inválido")
+        return result
+        } catch(error) {
+            console.log(error)
+            throw new Error(error)
         }
     }
 }

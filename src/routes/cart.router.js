@@ -3,56 +3,56 @@ import CartManager from "../services/CartManager.js";
 
 const cartRouter = Router()
 
-cartRouter.get('/', (req, res)=>{
+cartRouter.get('/', async (req, res)=>{
 
-    let carts = CartManager.getCartManager().getCarts()
-
+    let carts = await CartManager.getCarts()
     return res.status(200).json(carts)
 
 })
 
-cartRouter.post('/', (req, res) => {
-    const cart = CartManager.getCartManager().addCart()
+cartRouter.post('/', async (req, res) => {
 
-    return res.status(200).json(cart)
-
+    try { 
+        const cart = await CartManager.addCart()
+        return res.status(201).json(cart)
+    } catch(error) {
+        return res.status(500).json({error: error.message})
+    }
 })
 
-cartRouter.get('/:cid', (req, res) => {
+cartRouter.get('/:cid', async (req, res) => {
     const {cid} = req.params
-    if(!cid) {
-        return res.status(400).json({error: "Id inválido"})
+    try {
+
+        if(!cid || cid.length !== 24) {
+            return res.status(400).json({error: "Id inválido"})
+        }
+
+        let cart = await CartManager.getCartById(cid)
+        
+        return res.status(200).json(cart)
+    } catch(error) {
+        return res.status(500).json({error: error.message})
     }
-    const {result, error, cart} = CartManager.getCartManager().getCartById(cid)
-    if(!result)
-    {
-        return res.status(400).json(error)
-    } else if(!cart) {
-        return res.status(400).json({error: "No se encontró un cart con ese id"})
-    }
-    return res.status(200).json(cart.products)
 })
 
-cartRouter.post("/:cid/product/:pid", (req, res) => {
+cartRouter.post("/:cid/product/:pid", async (req, res) => {
     const {cid, pid} = req.params
     const {quantity} = req.body
-    if(!cid || !pid) {
+    if(!cid || cid.length !== 24 || !pid || pid.length !== 24) {
         return res.status(400).json({error: "Id inválido"})
     }
     if(!quantity) {
         return res.status(400).json({error: "Quantity inválido"})
     }
 
-    const { result, error, product } = CartManager.getCartManager().addToCart(cid, pid, quantity)
-
-    if(!result) {
-        return res.status(400).json(error)
+    try {
+        await CartManager.addToCart(cid, pid, quantity)
+    
+        return res.sendStatus(201)
+    } catch(error) {
+        return res.status(500).json({error: error.message})
     }
-
-    return res.status(200).json(product)
-
 })
-
-
 
 export default cartRouter

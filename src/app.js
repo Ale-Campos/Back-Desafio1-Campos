@@ -6,6 +6,7 @@ import handlebars from 'express-handlebars'
 import __dirname from './utils/dirname.js'
 import path from 'path'
 import viewsRouter from './routes/views.router.js'
+import mongoose from 'mongoose'
 
 const app = express()
 const port = 8080
@@ -38,3 +39,14 @@ io.on('connection', (socket) => {
         console.log(data)
     })
 })
+
+const connect = async() => {
+    try {
+        await mongoose.connect("mongodb+srv://admin:coder@cluster0.hi9sqat.mongodb.net/?dbName=Coderhouse")
+        .then(() => console.log("DataBase connected"))
+    } catch (error) {
+        console.log("Error while connecting to DataBase: ",error.message)
+    }
+}
+
+connect()

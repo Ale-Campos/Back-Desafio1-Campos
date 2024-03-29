@@ -1,3 +1,4 @@
+import { cartsModel } from "../dao/models/carts.js"
 import Cart, { CartProduct } from "../models/Cart.js"
 import __dirname from "../utils/dirname.js"
 import fs from "fs"
@@ -16,60 +17,33 @@ export default class CartManager {
         return CartManager.cartManager
     }
 
-    addCart() {
-        let newCart = new Cart()
-        let carts = this.getCarts()
-        carts = [...carts, newCart]
-
-        fs.writeFileSync(this.path, JSON.stringify(carts), null, 2)
-
-        return newCart
-
+    static async addCart() {
+        try {
+            let newCart = await new cartsModel().save()
+            console.log(newCart)
+            return newCart
+        } catch(error) {
+            throw new Error(error)
+        }
     }
 
-    getCarts() {
-        let carts = JSON.parse(fs.readFileSync(this.path, 'utf-8', (err, data) => data))
+    static async getCarts() {
+        let carts = await cartsModel.find()
         return carts
     }
 
-    getCartById(id) {
-        let result = {result: true, error: ''}
-
-        if(id) {
-            let cart = this.getCarts()
-            result.cart = cart.find(prod => prod.id == id)
-
-        } else {
-            result.result= false
-            result.error = "El id es invalid"
+    static async getCartById(id) {
+        try {
+            let cart = await cartsModel.findById(id)
+            return cart
+        } catch(error) {
+            throw new Error("Error al buscar el carrito")
         }
-
-        return result
     }
 
-    addToCart(id, productId, quantity) {
+   static async addToCart(id, productId, quantity) {
         console.log(id)
-        let result = {result: true, error: ''}
-        let carts = this.getCarts()
-        let cartIndex = carts.findIndex(cart => cart.id == id)
-        if(cartIndex !== -1){
+        await cartsModel.updateOne({_id: id}, {$push: {products: {productId, quantity}}})
 
-            let cart = carts[cartIndex]
-            let cartProduct = new CartProduct(productId, quantity)
-            let existigProductIndex = cart.products.findIndex((prod) => prod.product == productId)
-            
-            if(existigProductIndex === -1 ) {
-                cart.products.push(cartProduct)
-            } else {
-                cart.products[existigProductIndex].quantity += quantity
-            }
-
-            fs.writeFileSync(this.path, JSON.stringify(carts, null, 2))
-            result.product = cartProduct
-        } else {
-            result.result = false
-            result.error= 'Cart not found'
-        }
-        return result
     }
 }
