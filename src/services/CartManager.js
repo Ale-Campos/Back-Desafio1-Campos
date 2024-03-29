@@ -8,17 +8,9 @@ export default class CartManager {
         this.path = __dirname + '/../database/carts.json'
     }
 
-    static getCartManager() {
-        if(CartManager.cartManager === undefined) {
-            CartManager.cartManager = new CartManager()
-        }
-        return CartManager.cartManager
-    }
-
     static async addCart() {
         try {
             let newCart = await new cartsModel().save()
-            console.log(newCart)
             return newCart
         } catch(error) {
             throw new Error(error)
@@ -41,9 +33,71 @@ export default class CartManager {
     }
 
    static async addToCart(id, productId, quantity) {
-        console.log(id)
+    try {
         let cart = await cartsModel.findById(id)
         cart.products.push({product: productId, quantity})
         await cartsModel.updateOne({_id: id}, cart)
+        return cart
+    } catch(error) {
+        throw new Error(error)
+    }
+        
+    }
+
+    static async getProductFromCart(id, productId) {
+        try {
+            let cart = await cartsModel.findById(id)
+            let product = cart.products.find(product => product.product._id == productId)
+            return product
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    static async removeFromCart(id, productId) {
+        try {
+            //* Forma 1 utilizando Aggregations
+            // let cart = await cartsModel.findByIdAndUpdate(id, {
+            //     $pull: {products: {product: productId}}
+            // }, {new: true})
+
+            //* Forma 2 utilizando filter
+            let cart = await cartsModel.findById(id)
+            cart.products = cart.products.filter(order => order.product._id != productId)
+
+            await cartsModel.updateOne({_id: id}, cart)
+            return cart
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
+
+    static async updateCart(id, products) {
+        let cart = await cartsModel.findById(id)
+        cart.products = products
+        await cartsModel.updateOne({_id: id}, cart)
+        return cart
+    }
+
+    static async unpdateProductQuantity(id, productId, quantity) {
+        let cart = await cartsModel.findById(id)
+        let product = cart.products.find(product => product.product._id == productId)
+        product.quantity = quantity
+        
+        await cartsModel.updateOne({_id: id}, cart)
+
+        return cart
+    }
+
+    static async clearCart(id) {
+        try {
+            let cart = await cartsModel.updateOne({_id: id}, {products: []})
+
+            cart = await cartsModel.findById(id)
+
+            return cart
+        } catch(error) {
+            throw new Error(error)
+        }
     }
 }

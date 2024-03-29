@@ -27,4 +27,8 @@ cartsSchema.pre('findOne', function() {
     this.populate('products.product')
 })
 
+cartsSchema.pre('findById', function() {
+    this.populate('products.product')
+})
+
 export const cartsModel = mongoose.model(cartsCollection, cartsSchema)
