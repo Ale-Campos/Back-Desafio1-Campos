@@ -6,7 +6,7 @@ const productRouter = Router();
 
 productRouter.get("/", async (req,res) => {
     let { limit, page, query, sort } = req.query
-    let products = await ProductManager.getProducts(limit || 10, page || 1, query || null, sort || 'desc')
+    let products = await ProductManager.getProducts(limit || 10, page || 1, query || null, sort)
 
     console.log(products)
     if(limit === undefined) {

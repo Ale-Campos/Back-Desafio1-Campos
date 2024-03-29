@@ -1,6 +1,6 @@
 import { productsModel } from '../dao/models/products.js'
 import __dirname from '../utils/dirname.js'
-import fs from 'fs'
+import fs, { cp } from 'fs'
 
 export default class ProductManager {
 
@@ -33,16 +33,22 @@ export default class ProductManager {
     }
 
     static async getProducts(limit, page, query, sort) {
-        
-
+        console.log(sort)
+        console.log(query)
         let filter = {};
         if(query) {
             query = query.toLowerCase()
             query=='true' || query == 'false'? filter = {status: query} : filter= {category: query}  
             
         }
-
-        let products = await productsModel.paginate(filter, {limit, page, sort: {price: sort}, lean:true})
+        let sortObj= {}
+        if(sort){
+            sort = sort.toLowerCase()
+            sortObj = {price: sort}
+            
+        }
+        console.log(sortObj)
+        let products = await productsModel.paginate(filter, {limit, page, sort: sortObj, lean:true})
         return products
     }
 
