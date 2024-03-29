@@ -1,7 +1,5 @@
 import { cartsModel } from "../dao/models/carts.js"
-import Cart, { CartProduct } from "../models/Cart.js"
 import __dirname from "../utils/dirname.js"
-import fs from "fs"
 
 export default class CartManager {
     static cartManager
@@ -37,13 +35,15 @@ export default class CartManager {
             let cart = await cartsModel.findById(id)
             return cart
         } catch(error) {
+            console.log(error)
             throw new Error("Error al buscar el carrito")
         }
     }
 
    static async addToCart(id, productId, quantity) {
         console.log(id)
-        await cartsModel.updateOne({_id: id}, {$push: {products: {productId, quantity}}})
-
+        let cart = await cartsModel.findById(id)
+        cart.products.push({product: productId, quantity})
+        await cartsModel.updateOne({_id: id}, cart)
     }
 }
