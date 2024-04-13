@@ -17,6 +17,7 @@
             <th>Price</th>
             <th>Stock</th>
             <th>Category</th>
+            <th>Acciones</th>
         </tr>
     </thead>
     <tbody>
@@ -28,6 +29,7 @@
             <td>{{this.price}}</td>
             <td>{{this.stock}}</td>
             <td>{{this.category}}</td>
+            <td><button onclick="addToCart('{{this._id}}')">Add to cart</button></td>
         </tr>
         {{/each}}
     </tbody>
@@ -49,4 +51,23 @@
         const categoria = this.value;
         window.location.href = `/products?query=${categoria}`;
     });
+
+    async function addToCart(id) {
+        console.log(id)
+        await fetch(`/api/carts/6605f1a55a29742c2b731af8/product/${id}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                quantity: 1
+            })
+        }).then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                alert('Producto agregado al carrito');
+            }
+        });
+    }
+
 </script>
